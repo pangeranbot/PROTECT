@@ -1,0 +1,138 @@
+# -*- coding: utf-8 -*-
+from Api import Poll, Talk, channel
+from lib.curve.ttypes import *
+
+def def_callback(str):
+    print(str)
+
+class LINE:
+
+  mid = None
+  authToken = None
+  cert = None
+  channel_access_token = None
+  token = None
+  obs_token = None
+  refresh_token = None
+
+
+  def __init__(self):
+    self.Talk = Talk()
+
+  def login(self, mail=None, passwd=None, cert=None, token=None, qr=False, callback=None):
+    if callback is None:
+      callback = def_callback
+    resp = self.__validate(mail,passwd,cert,token,qr)
+    if resp == 1:
+      self.Talk.login(mail, passwd, callback=callback)
+    elif resp == 2:
+      self.Talk.login(mail,passwd,cert, callback=callback)
+    elif resp == 3:
+      self.Talk.TokenLogin(token)
+    elif resp == 4:
+      self.Talk.qrLogin(callback)
+    else:
+      raise Exception("invalid arguments")
+
+    self.authToken = self.Talk.authToken
+    self.cert = self.Talk.cert
+
+    self.Poll = Poll(self.authToken)
+    self.channel = channel.Channel(self.authToken)
+    self.channel.login()
+
+    self.mid = self.channel.mid
+    self.channel_access_token = self.channel.channel_access_token
+    self.token = self.channel.token
+    self.obs_token = self.channel.obs_token
+    self.refresh_token = self.channel.refresh_token
+
+
+  """User"""
+
+  def getProfile(self):
+    return self.Talk.client.getProfile()
+
+  def getSettings(self):
+    return self.Talk.client.getSettings()
+
+  def getUserTicket(self):
+    return self.Talk.client.getUserTicket()
+
+  def updateProfile(self, profileObject):
+    return self.Talk.client.updateProfile(0, profileObject)
+
+  def updateSettings(self, settingObject):
+    return self.Talk.client.updateSettings(0, settingObject)
+
+
+  """Operation"""
+
+  def fetchOperation(self, revision, count):
+        return self.Poll.client.fetchOperations(revision, count)
+
+  def fetchOps(self, rev, count):
+        return self.Poll.client.fetchOps(rev, count, 0, 0)
+
+  def getLastOpRevision(self):
+        return self.Talk.client.getLastOpRevision()
+
+  def stream(self):
+        return self.Poll.stream()
+
+  """Message"""
+
+  def sendMessage(self, messageObject):
+        return self.Talk.client.sendMessage(0,messageObject)
+
+  def sendText(self, Tomid, text):
+        msg = Message()
+        msg.to = Tomid
+        msg.text = text
+
+        return self.Talk.client.sendMessage(0, msg)
+  def sendImage(self, to_, path):
+        M = Message(to=to_,contentType = 1)
+        M.contentMetadata = None
+        M.contentPreview = None
+        M_id = self._client.sendMessage(M).id
+        files = {
+            'file': open(path, 'rb'),
+        }
+        params = {
+            'name': 'media',
+            'oid': M_id,
+            'size': len(open(path, 'rb').read()),
+            'type': 'image',
+            'ver': '1.0',
+        }
+        data = {
+            'params': json.dumps(params)
+        }
+        r = self._client.post_content('https://os.line.naver.jp/talk/m/upload.nhn', data=data, files=files)
+        if r.status_code != 201:
+            raise Exception('Upload image failure.')
+        #r.content
+        return True
+  def sendEvent(self, messageObject):
+        return self._client.sendEvent(0, messageObject)
+
+  def sendChatChecked(self, mid, lastMessageId):
+        return self.Talk.client.sendChatChecked(0, mid, lastMessageId)
+
+  def getMessageBoxCompactWrapUp(self, mid):
+        return self.Talk.client.getMessageBoxCompactWrapUp(mid)
+
+  def getMessageBoxCompactWrapUpList(self, start, messageBox):
+        return self.Talk.client.getMessageBoxCompactWrapUpList(start, messageBox)
+
+  def getRecentMessages(self, messageBox, count):
+        return self.Talk.client.getRecentMessages(messageBox.id, count)
+
+  def getMessageBox(self, channelId, messageboxId, lastMessagesCount):
+        return self.Talk.client.getMessageBox(channelId, messageboxId, lastMessagesCount)
+
+  def getMessageBoxList(self, channelId, lastMessagesCount):
+        return self.Talk.client.getMessageBoxList(channelId, lastMessagesCount)
+
+  def getMessageBoxListByStat
