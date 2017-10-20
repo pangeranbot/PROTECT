@@ -6,7 +6,7 @@ from datetime import datetime
 import time,random,sys,json,codecs,threading,glob,re
 
 cl = LINETCR.LINE()
-cl.login(qr=True)
+cl.login(Token"Ela5PGOjpQMBPoKyDWNb.hhEN5MnIvPQdxusvKGnkkW.2fVhsg1p1NE3lT3dmJiggHF8wLCAuAoWQfn3DyawL78=")
 cl.loginResult()
 
 ki = kk = kc = cl 
@@ -15,7 +15,7 @@ print "login success"
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-helpMessage =""" Chivas Bot
+helpMessage =""" Aim Bot
 [Id︎]
 [Mid]
 [Me︎]
@@ -76,7 +76,7 @@ Bmid = kk.getProfile().mid
 Cmid = kc.getProfile().mid
 
 Bots=[mid,Amid,Bmid,Cmid]
-admin=["YOUR_MID_HERE"]
+admin=["u0b57006bd3ce6aec2975f70aba64f1e8"]
 wait = {
     'contact':True,
     'autoJoin':True,
@@ -84,15 +84,15 @@ wait = {
     'leaveRoom':True,
     'timeline':True,
     'autoAdd':True,
-    'message':"Thanks for add me",
+    'message':"Thanks udah jadi temen aim",
     "lang":"JP",
-    "comment":"Thanks for add me",
+    "comment":"Thanks udah jadi temen aim",
     "commentOn":False,
     "commentBlack":{},
     "wblack":False,
     "dblack":False,
-    "clock":True,
-    "cName":"Chivas ",
+    "clock":False,
+    "cName":" ",
     "blacklist":{},
     "wblacklist":False,
     "dblacklist":False,
@@ -498,70 +498,83 @@ def bot(op):
             elif msg.text is None:
                 return
             elif msg.text in ["Key","help","Help"]:
-                if wait["lang"] == "JP":
-                    cl.sendText(msg.to,helpMessage)
-                else:
-                    cl.sendText(msg.to,helpt)
+                 if msg.from_ in admin:
+                     if wait["lang"] == "JP":
+                         cl.sendText(msg.to,helpMessage)
+                     else:
+                         cl.sendText(msg.to,helpt)
             elif ("Gn " in msg.text):
-                if msg.toType == 2:
-                    X = cl.getGroup(msg.to)
-                    X.name = msg.text.replace("Gn ","")
-                    cl.updateGroup(X)
-                else:
-                    cl.sendText(msg.to,"It can't be used besides the group.")
+                if msg.from_ in admin:
+                    if msg.toType == 2:
+                        X = cl.getGroup(msg.to)
+                        X.name = msg.text.replace("Gn ","")
+                        cl.updateGroup(X)
+                    else:
+                        cl.sendText(msg.to,"It can't be used besides the group.")
             elif ("Cv1 gn " in msg.text):
-                if msg.toType == 2:
-                    X = cl.getGroup(msg.to)
-                    X.name = msg.text.replace("Cv1 gn ","")
-                    ki.updateGroup(X)
-                else:
-                    ki.sendText(msg.to,"It can't be used besides the group.")
+                if msg.from_ in admin:
+                    if msg.toType == 2:
+                        X = cl.getGroup(msg.to)
+                        X.name = msg.text.replace("Cv1 gn ","")
+                        ki.updateGroup(X)
+                    else:
+                        ki.sendText(msg.to,"It can't be used besides the group.")
             elif ("Cv2 gn " in msg.text):
-                if msg.toType == 2:
-                    X = cl.getGroup(msg.to)
-                    X.name = msg.text.replace("Cv2 gn ","")
-                    kk.updateGroup(X)
-                else:
-                    kk.sendText(msg.to,"It can't be used besides the group.")
+                if msg.from_ in admin:
+                    if msg.toType == 2:
+                        X = cl.getGroup(msg.to)
+                        X.name = msg.text.replace("Cv2 gn ","")
+                        kk.updateGroup(X)
+                    else:
+                        kk.sendText(msg.to,"It can't be used besides the group.")
             elif ("Cv3 gn " in msg.text):
-                if msg.toType == 2:
-                    X = cl.getGroup(msg.to)
-                    X.name = msg.text.replace("Cv3 gn ","")
-                    kc.updateGroup(X)
-                else:
-                    kc.sendText(msg.to,"It can't be used besides the group.")
+                if msg.from_ in admin:
+                    if msg.toType == 2:
+                        X = cl.getGroup(msg.to)
+                        X.name = msg.text.replace("Cv3 gn ","")
+                        kc.updateGroup(X)
+                    else:
+                        kc.sendText(msg.to,"It can't be used besides the group.")
             elif "Kick " in msg.text:
-                midd = msg.text.replace("Kick ","")
-                cl.kickoutFromGroup(msg.to,[midd])
-            elif "Cv1 kick " in msg.text:
-                midd = msg.text.replace("Cv1 kick ","")
-                ki.kickoutFromGroup(msg.to,[midd])
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Kick ","")
+                    cl.kickoutFromGroup(msg.to,[midd])
+                elif "Cv1 kick " in msg.text:
+                    midd = msg.text.replace("Cv1 kick ","")
+                    ki.kickoutFromGroup(msg.to,[midd])
             elif "Cv2 kick " in msg.text:
-                midd = msg.text.replace("Cv2 kick ","")
-                kk.kickoutFromGroup(msg.to,[midd])
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Cv2 kick ","")
+                    kk.kickoutFromGroup(msg.to,[midd])
             elif "Cv3 kick " in msg.text:
-                midd = msg.text.replace("Cv3 kick ","")
-                kc.kickoutFromGroup(msg.to,[midd])
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Cv3 kick ","")
+                    kc.kickoutFromGroup(msg.to,[midd])
             elif "Invite " in msg.text:
-                midd = msg.text.replace("Invite ","")
-                cl.findAndAddContactsByMid(midd)
-                cl.inviteIntoGroup(msg.to,[midd])
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Invite ","")
+                    cl.findAndAddContactsByMid(midd)
+                    cl.inviteIntoGroup(msg.to,[midd])
             elif "Cv1 invite " in msg.text:
-                midd = msg.text.replace("Cv1 invite ","")
-                ki.findAndAddContactsByMid(midd)
-                ki.inviteIntoGroup(msg.to,[midd])
-            elif "Cv2 invite " in msg.text:
-                midd = msg.text.replace("Cv2 invite ","")
-                kk.findAndAddContactsByMid(midd)
-                kk.inviteIntoGroup(msg.to,[midd])
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Cv1 invite ","")
+                    ki.findAndAddContactsByMid(midd)
+                    ki.inviteIntoGroup(msg.to,[midd])
+            elif "Cv2 invite " in msg.text:
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Cv2 invite ","")
+                    kk.findAndAddContactsByMid(midd)
+                    kk.inviteIntoGroup(msg.to,[midd])
             elif "Cv3 invite " in msg.text:
-                midd = msg.text.replace("Cv3 invite ","")
-                kc.findAndAddContactsByMid(midd)
-                kc.inviteIntoGroup(msg.to,[midd])
+                if msg.from_ in admin:
+                    midd = msg.text.replace("Cv3 invite ","")
+                    kc.findAndAddContactsByMid(midd)
+                     kc.inviteIntoGroup(msg.to,[midd])
             elif msg.text in ["Me"]:
-                msg.contentType = 13
-                msg.contentMetadata = {'mid': mid}
-                cl.sendMessage(msg)
+                if msg.from_ in admin:
+                    msg.contentType = 13
+                    msg.contentMetadata = {'mid': mid}
+                    cl.sendMessage(msg)
             elif msg.text in ["Cv1"]:
                 msg.contentType = 13
                 msg.contentMetadata = {'mid': Amid}
